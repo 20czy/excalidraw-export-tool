@@ -8,6 +8,7 @@
     "core:window:default",
     "core:webview:default",
     "dialog:default",
-    "fs:default"
+    "fs:default",
+    "fs:write-files"
   ]
 }

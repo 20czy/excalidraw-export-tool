@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
 import { exportToBlob } from "@excalidraw/excalidraw";
+import { detectTauri } from "./tauriEnv";
 
 // Custom hook for export functionality
-export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFileToTauri) {
+export function useExportOperations(excalidrawAPI, exportFolder, saveFileToTauri, selectExportFolder) {
   const [isExporting, setIsExporting] = useState(false);
 
   // Save file to browser
@@ -35,19 +36,21 @@ export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFi
 
       console.log(`找到 ${imageElements.length} 个图片元素待导出`);
 
-      // Check Tauri availability dynamically
-      const isTauriAvailable = typeof window !== 'undefined' && typeof window.__TAURI__ !== "undefined";
-      
-      // If in Tauri environment and no folder selected, prompt to select
-      if (isTauriAvailable && !exportFolder) {
+      const isTauriAvailable = await detectTauri();
+
+      let targetFolder = exportFolder;
+
+      if (isTauriAvailable && !targetFolder && selectExportFolder) {
         const confirmSelect = confirm(
           `即将导出 ${imageElements.length} 张图片。\n\n是否选择导出文件夹？\n点击"确定"选择文件夹，点击"取消"将逐个选择保存位置。`
         );
-        
+
         if (confirmSelect) {
-          // We'll return early and let the parent handle folder selection
-          setIsExporting(false);
-          return { needsFolderSelection: true };
+          try {
+            targetFolder = await selectExportFolder();
+          } catch (error) {
+            console.error("Error selecting export folder:", error);
+          }
         }
       }
 
@@ -117,7 +120,7 @@ export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFi
 
         // Choose save method based on environment
         if (isTauriAvailable) {
-          const saved = await saveFileToTauri(blob, filename, exportFolder);
+          const saved = await saveFileToTauri(blob, filename, targetFolder);
           if (saved) successCount++;
         } else {
           saveFileToBrowser(blob, filename);
@@ -130,7 +133,7 @@ export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFi
 
       alert(
         `成功导出 ${successCount}/${imageElements.length} 张图片 (${TARGET_SIZE}x${TARGET_SIZE}px)${
-          isTauriAvailable && exportFolder ? `\n保存位置: ${exportFolder}` : ""
+          isTauriAvailable && targetFolder ? `\n保存位置: ${targetFolder}` : ""
         }`
       );
     } catch (error) {
@@ -139,7 +142,7 @@ export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFi
     } finally {
       setIsExporting(false);
     }
-  }, [excalidrawAPI, exportFolder, saveFileToTauri, saveFileToBrowser]);
+  }, [excalidrawAPI, exportFolder, saveFileToTauri, saveFileToBrowser, selectExportFolder]);
 
   // Export selected elements
   const handleExportSelected = useCallback(async () => {
@@ -200,7 +203,7 @@ export function useExportOperations(excalidrawAPI, isTauri, exportFolder, saveFi
       const filename = `selected_elements_${Date.now()}.png`;
 
       // Check Tauri availability dynamically
-      const isTauriAvailable = typeof window !== 'undefined' && typeof window.__TAURI__ !== "undefined";
+      const isTauriAvailable = await detectTauri();
       
       // Choose save method based on environment
       if (isTauriAvailable) {

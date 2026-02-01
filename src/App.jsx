@@ -1,9 +1,10 @@
 import { Excalidraw, MainMenu } from "@excalidraw/excalidraw";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTauriFileOperations } from "./components/useTauriFileoperations";
 import { useExportOperations } from "./components/ExportOperations";
 import { useFileHandler } from "./components/FileHandler";
 import { UIControls, FileInput } from "./components/UIControls";
+import { detectTauri } from "./components/tauriEnv";
 
 /**
  * 主应用组件
@@ -15,8 +16,17 @@ function App() {
 
   // ==================== Tauri 相关 Hooks ====================
   // 检测是否运行在 Tauri 环境中
-  const isTauri =
-    typeof window !== "undefined" && typeof window.__TAURI__ !== "undefined";
+  const [isTauri, setIsTauri] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    detectTauri().then((result) => {
+      if (isMounted) setIsTauri(result);
+    });
+    return () => { 
+      isMounted = false;
+    };
+  }, []);
   
   // Tauri 文件操作：导出文件夹选择、文件保存等
   const { 
@@ -32,10 +42,10 @@ function App() {
     handleExportImages, 
     handleExportSelected 
   } = useExportOperations(
-    excalidrawAPI, 
-    isTauri, 
-    exportFolder, 
-    saveFileToTauri
+    excalidrawAPI,
+    exportFolder,
+    saveFileToTauri,
+    selectExportFolder
   );
 
   const { handleFile } = useFileHandler(excalidrawAPI);
