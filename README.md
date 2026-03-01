@@ -1,18 +1,24 @@
 ## 项目意义
+<img width="1501" height="763" alt="截屏2026-03-01 14 44 37" src="https://github.com/user-attachments/assets/df914c79-6e29-4da7-991e-69dcb2f9a9fe" />
 
 本项目基于 Excalidraw 开发桌面端应用，解决网页端在导出上的限制：浏览器无法将图片导出到指定文件夹，也难以精确调整导出像素。因此提供桌面端能力，便于选择导出目录并按指定像素导出图片，提升批量导出与素材管理效率。
 
 ## 启动注意事项
 
+### 网页端启动
 - 在项目根目录运行命令（与 package.json 同级）
 - 首次启动先安装依赖：npm install
 - 浏览器调试：npm run dev
 - Tauri 桌面：npx tauri dev
 - 不要使用 npx run tauri，它会尝试执行名为 tauri 的本地文件并报错
 
+### 桌面端启动
+- 下载后直接打开即可
+
 ## 使用说明
 
 ### 导入与编辑
+<img width="361" height="497" alt="截屏2026-03-01 14 47 59" src="https://github.com/user-attachments/assets/db8b2f11-d10b-4481-b26a-ea6b61b01a5c" />
 - 打开应用后在主菜单选择“加载画板文件”，导入 .excalidraw 文件
 - 也可以直接在画布上创建图形、文字、图片等元素
 - 图片元素可用于后续批量导出
