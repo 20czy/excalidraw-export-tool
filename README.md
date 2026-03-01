@@ -25,11 +25,16 @@
 - 图片元素可用于后续批量导出
 
 ### 导出全部图片（1440x1440）
+<img width="936" height="594" alt="截屏2026-03-01 14 50 26" src="https://github.com/user-attachments/assets/647bc84c-70ae-421e-ad2b-f12b21f0c1c0" />
+
 - 点击右上角“导出所有图片 (1440x1440)”
 - 浏览器模式：会逐个下载到默认下载目录
 - Tauri 桌面模式：可先选择导出文件夹，再一键导出到指定目录
 
 ### 导出选中元素
+
+<img width="827" height="505" alt="截屏2026-03-01 14 51 50" src="https://github.com/user-attachments/assets/d7e88511-cfae-4ca7-b8fb-cdb64abf7433" />
+
 - 先在画布中框选或点选需要导出的元素
 - 点击“导出选中元素”，生成单张图片并保存
 - Tauri 模式会弹出保存位置，浏览器模式直接下载
