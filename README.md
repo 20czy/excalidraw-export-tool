@@ -19,6 +19,7 @@
 
 ### 导入与编辑
 <img width="361" height="497" alt="截屏2026-03-01 14 47 59" src="https://github.com/user-attachments/assets/db8b2f11-d10b-4481-b26a-ea6b61b01a5c" />
+
 - 打开应用后在主菜单选择“加载画板文件”，导入 .excalidraw 文件
 - 也可以直接在画布上创建图形、文字、图片等元素
 - 图片元素可用于后续批量导出
