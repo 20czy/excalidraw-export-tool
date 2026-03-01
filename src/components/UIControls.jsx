@@ -24,18 +24,18 @@ export function UIControls({
       {/* Always show folder selection button */}
       <button
         onClick={selectExportFolder}
-        disabled={isExporting}
+        disabled={isExporting || !isTauri}
         style={{
           padding: "6px 12px",
-          background: isExporting ? "#ccc" : (exportFolder ? "#28a745" : "#6c757d"),
+          background: isExporting || !isTauri ? "#ccc" : (exportFolder ? "#28a745" : "#6c757d"),
           color: "white",
           border: "none",
           borderRadius: "4px",
-          cursor: isExporting ? "not-allowed" : "pointer",
+          cursor: isExporting || !isTauri ? "not-allowed" : "pointer",
           fontWeight: "bold",
           fontSize: "14px",
         }}
-        title={exportFolder || "点击选择导出文件夹"}
+        title={isTauri ? (exportFolder || "点击选择导出文件夹") : "仅限 Tauri 模式"}
       >
         📁 {exportFolder ? "✓ 已选择文件夹" : "选择导出文件夹"}
       </button>

@@ -97,7 +97,7 @@ function App() {
           <MainMenu.Separator />
           
           {/* 自定义菜单项：选择导出文件夹 */}
-          <MainMenu.Item onSelect={selectExportFolder}>
+          <MainMenu.Item onSelect={() => { if (isTauri) selectExportFolder(); }}>
             📁 选择导出文件夹 {exportFolder && "✓"}
           </MainMenu.Item>
           

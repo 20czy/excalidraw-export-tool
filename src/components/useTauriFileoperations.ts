@@ -9,7 +9,7 @@ export function useTauriFileOperations() {
    */
   const selectExportFolder = useCallback(async () => {
     if (!(await detectTauri())) {
-      throw new Error("Folder selection is only available in Tauri");
+      return null;
     }
 
     const { open } = await import("@tauri-apps/plugin-dialog");
@@ -38,7 +38,7 @@ export function useTauriFileOperations() {
       folder?: string | null
     ): Promise<boolean> => {
       if (!(await detectTauri())) {
-        throw new Error("File saving is only available in Tauri");
+        return false;
       }
 
       const { writeFile } = await import("@tauri-apps/plugin-fs");
